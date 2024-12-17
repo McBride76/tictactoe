@@ -1,3 +1,8 @@
+import Player from "./Player.js";
+
+const PlayerOne = new Player('x');
+const PlayerTwo = new Player('o');
+
 const radioButtons: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="playOption"]')!;
 const tiles: NodeListOf<HTMLDivElement> = document.querySelectorAll('.tile')!;
 
@@ -8,11 +13,13 @@ type Tile = HTMLParagraphElement | HTMLDivElement;
 type Game = {
     mode: PlayMode,
     inMatch: boolean
+    turn: Player
 };
 
 const TicTacToe: Game = {
     mode: 'CPU',
-    inMatch: false
+    inMatch: false,
+    turn: PlayerOne
 };
 
 const tileIsMarked = (tile: Tile): boolean => tile instanceof HTMLParagraphElement;
