@@ -5,6 +5,17 @@ const TicTacToe = {
     mode: 'CPU',
     inMatch: false
 };
+const tileIsMarked = (tile) => tile instanceof HTMLParagraphElement;
+const handleTileSelect = (e) => {
+    if (tileIsMarked(e.target))
+        return;
+    if (TicTacToe.mode === 'CPU') {
+        console.log("CPU turn");
+    }
+    else {
+        console.log("Player 2 Turn");
+    }
+};
 radioButtons.forEach((radio) => {
     radio.addEventListener('change', () => {
         var _a;
@@ -13,10 +24,10 @@ radioButtons.forEach((radio) => {
 });
 tiles.forEach((tile) => {
     tile.addEventListener('mouseover', (e) => {
-        let p = e.target;
-        if (p.innerText === "") {
+        if (!tileIsMarked(e.target)) {
             tile.style.backgroundColor = '#fafcff';
         }
     });
-    tile.addEventListener('mouseout', (e) => tile.style.backgroundColor = '#ffffff');
+    tile.addEventListener('mouseout', () => tile.style.backgroundColor = '#ffffff');
+    tile.addEventListener('click', handleTileSelect);
 });
