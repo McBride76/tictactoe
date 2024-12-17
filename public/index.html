@@ -7,12 +7,12 @@
     <title>TicTacToe</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li id="cpu">CPU</li>
-            <li id="twoPlayer">2-Player</li>
-        </ul>
-    </nav>
+    <div class="play-options">
+        <input type="radio" name="playOption" id="playCPU" value="CPU" checked>
+        <label for="playCPU">CPU</label>
+        <input type="radio" name="playOption" id="play2Player" value="PVP">
+        <label for="play2Player">2 Player</label>
+    </div>
     <main>
         <div class="tiles-container">
             <div class="tile"></div>
@@ -26,5 +26,6 @@
             <div class="tile"></div>
         </div>
     </main>
+    <script src="js/game.js" defer></script>
 </body>
 </html>

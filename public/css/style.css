@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.play-options {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+.play-options label {
+    padding: 0.4rem 1rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid rgb(200, 200, 200); 
+}
+
+input[type="radio"]:checked + label {
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 13, 255);
+}
+
+
+.tile {
+    background-color: rgb(200, 200, 200);
+    width: 50px;
+    height: 50px;
+}
