@@ -24,15 +24,14 @@ const TicTacToe = {
     turn: 0
 };
 const checkForWin = (player) => {
-    const playerTiles = JSON.stringify(player.getMarkedTiles);
-    let won = false;
-    winningNums.forEach((combo) => {
-        if (playerTiles === JSON.stringify(combo))
-            won = true;
+    const playerTiles = player.getMarkedTiles;
+    return winningNums.some((combo) => {
+        return combo.every((num) => playerTiles.includes(num));
     });
-    return won;
 };
-const stall = (ms) => __awaiter(void 0, void 0, void 0, function* () { return new Promise((resolve) => setTimeout(resolve, ms)); });
+const stall = (ms) => __awaiter(void 0, void 0, void 0, function* () {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+});
 const tileIsMarked = (tile) => tile instanceof HTMLParagraphElement;
 const switchTurn = () => {
     TicTacToe.turn = TicTacToe.turn === 0 ? 1 : 0;

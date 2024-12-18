@@ -31,15 +31,15 @@ const TicTacToe: Game = {
 };
 
 const checkForWin = (player: Player): boolean => {
-    const playerTiles = JSON.stringify(player.getMarkedTiles);
-    let won = false;
-    winningNums.forEach((combo: number[]) => {
-        if (playerTiles === JSON.stringify(combo)) won = true;
-    })
-    return won;
+    const playerTiles = player.getMarkedTiles;
+    return winningNums.some((combo: number[]) => {
+        return combo.every((num: number) => playerTiles.includes(num))
+    });
 }
 
-const stall = async (ms: number): Promise<void> => new Promise<void>((resolve) => setTimeout(resolve, ms));
+const stall = async (ms: number): Promise<void> => {
+    return new Promise<void>((resolve) => setTimeout(resolve, ms));
+}
 
 const tileIsMarked = (tile: Tile): boolean => tile instanceof HTMLParagraphElement;
 
