@@ -30,6 +30,17 @@ const TicTacToe: Game = {
     turn: 0
 };
 
+const checkForWin = (player: Player): boolean => {
+    const playerTiles = JSON.stringify(player.getMarkedTiles);
+    let won = false;
+    winningNums.forEach((combo: number[]) => {
+        if (playerTiles === JSON.stringify(combo)) won = true;
+    })
+    return won;
+}
+
+const stall = async (ms: number): Promise<void> => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
 const tileIsMarked = (tile: Tile): boolean => tile instanceof HTMLParagraphElement;
 
 const switchTurn = (): void => {
@@ -40,14 +51,15 @@ const handleTileSelect = (e: MouseEvent): undefined | void => {
     if (tileIsMarked(e.target as Tile)) return;
     
     const tile = e.target as HTMLDivElement;
-    console.log(tile.id);
     const player = TicTacToe.players[TicTacToe.turn];
 
     player.markTile(tile);
 
-    switchTurn();
-
-    // check for win
+    if (checkForWin(player)) {
+        alert(`${player.marker} has won!`);
+    } else {
+        switchTurn();
+    }
 }
 
 radioButtons.forEach((radio: HTMLInputElement) => {
