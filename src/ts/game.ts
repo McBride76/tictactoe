@@ -30,18 +30,48 @@ const TicTacToe: Game = {
     turn: 0
 };
 
-const checkForWin = (player: Player): boolean => {
-    const playerTiles = player.getMarkedTiles;
-    return winningNums.some((combo: number[]) => {
-        return combo.every((num: number) => playerTiles.includes(num))
+const highlightWinningTiles = (tileNums: number[]) => {
+    console.log(tileNums);
+    tileNums.forEach((id: number) => {
+        tiles[id - 1].removeEventListener('mouseenter', toggleTileBgColor);
+        tiles[id - 1].removeEventListener('mouseleave', toggleTileBgColor);
+        tiles[id - 1].style.backgroundColor = 'blue'
     });
+}
+
+const playerWinCombo = (player: Player): number[] => {
+    const playerTiles = player.getMarkedTiles;
+    let winCombo: number[] = [];
+    winningNums.some((combo: number[]) => {
+        if (combo.every((num: number) => playerTiles.includes(num))) {
+            winCombo = combo;
+            return true;
+        }
+
+        return false;
+    });
+
+    return winCombo;
+}
+
+const reset = () => {
+    tiles.forEach((tile: HTMLDivElement) => {
+        tile.style.backgroundColor = 'rgb(255, 255, 255)';
+        tile.removeEventListener('mouseenter', toggleTileBgColor);
+        tile.removeEventListener('mouseleave', toggleTileBgColor);
+        tile.addEventListener('mouseenter', toggleTileBgColor);
+        tile.addEventListener('mouseleave', toggleTileBgColor);
+        tile.addEventListener('click', handleTileSelect);
+    })
+
+    TicTacToe.players.forEach((player: Player) => player.reset());
 }
 
 const stall = async (ms: number): Promise<void> => {
     return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
-const tileIsMarked = (tile: Tile): boolean => tile instanceof HTMLParagraphElement;
+const tileIsMarked = (tile: Tile): boolean => tile.firstElementChild?.innerHTML !== "";
 
 const switchTurn = (): void => {
     TicTacToe.turn = TicTacToe.turn === 0 ? 1 : 0;
@@ -55,10 +85,24 @@ const handleTileSelect = (e: MouseEvent): undefined | void => {
 
     player.markTile(tile);
 
-    if (checkForWin(player)) {
-        alert(`${player.marker} has won!`);
+    let winCombo = playerWinCombo(player); 
+    if (winCombo.length > 0) {
+        highlightWinningTiles(winCombo);
+    }
+
+    switchTurn();
+}
+
+const setTileBgColor = (tile: HTMLDivElement, rgb: string) => tile.style.backgroundColor = rgb;
+
+const toggleTileBgColor = (e: MouseEvent) => {
+    const tile = e.target as Tile;
+    console.log(tileIsMarked(tile));
+    if (tileIsMarked(tile)) {
+        setTileBgColor(tile, 'rgb(255, 255, 255)');
     } else {
-        switchTurn();
+        let color = tile.style.backgroundColor === 'rgb(255, 255, 255)' ? 'rgb(248, 251, 255)' : 'rgb(255, 255, 255)';
+        setTileBgColor(tile, color);
     }
 }
 
@@ -68,12 +112,6 @@ radioButtons.forEach((radio: HTMLInputElement) => {
     })
 });
 
-tiles.forEach((tile: HTMLDivElement) => {
-    tile.addEventListener('mouseover', (e: MouseEvent) => {
-        if (! tileIsMarked(e.target as Tile)) {
-            tile.style.backgroundColor = '#fafcff';
-        }
-    })
-    tile.addEventListener('mouseout', () => tile.style.backgroundColor = '#ffffff');
-    tile.addEventListener('click', handleTileSelect);
-});
+document.addEventListener('DOMContentLoaded', () => {
+    reset();
+})

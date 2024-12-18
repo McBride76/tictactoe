@@ -6,15 +6,19 @@ export default class Player {
         private markedTiles: HTMLDivElement[] = []
     ) {}
 
-    markTile (tile: HTMLDivElement): void {
+    public markTile (tile: HTMLDivElement): void {
         this.markedTiles.push(tile);
         (tile.firstElementChild as HTMLParagraphElement).innerText = this.marker;
+        this.markedTiles = this.markedTiles.sort((a, b) => Number(a.id) - Number(b.id));
     }
 
     get getMarkedTiles (): number[] {
-        const sorted: number[] = [];
-        let sortedTiles = this.markedTiles.sort((a, b) => Number(a.id) - Number(b.id));
-        sortedTiles.forEach((tile: HTMLDivElement) => sorted.push(Number(tile.id)));
-        return sorted;
+        let ids: number[] = [];
+        this.markedTiles.forEach((tile: HTMLDivElement) => ids.push(Number(tile.id)));
+        return ids;
+    }
+
+    public reset() {
+        this.markedTiles = [];
     }
 }

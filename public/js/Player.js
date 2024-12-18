@@ -6,11 +6,14 @@ export default class Player {
     markTile(tile) {
         this.markedTiles.push(tile);
         tile.firstElementChild.innerText = this.marker;
+        this.markedTiles = this.markedTiles.sort((a, b) => Number(a.id) - Number(b.id));
     }
     get getMarkedTiles() {
-        const sorted = [];
-        let sortedTiles = this.markedTiles.sort((a, b) => Number(a.id) - Number(b.id));
-        sortedTiles.forEach((tile) => sorted.push(Number(tile.id)));
-        return sorted;
+        let ids = [];
+        this.markedTiles.forEach((tile) => ids.push(Number(tile.id)));
+        return ids;
+    }
+    reset() {
+        this.markedTiles = [];
     }
 }
