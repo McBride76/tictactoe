@@ -6,31 +6,48 @@ const PlayerTwo = new Player('o');
 const radioButtons: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="playOption"]')!;
 const tiles: NodeListOf<HTMLDivElement> = document.querySelectorAll('.tile')!;
 
+const winningNums = [
+    [1, 2, 3], [4, 5, 6], [7, 8, 9],
+    [1, 5, 9], [1, 4, 7], [2, 5, 8],
+    [3, 6, 9]
+];
+
 type PlayMode = 'CPU' | 'PVP';
 
 type Tile = HTMLParagraphElement | HTMLDivElement;
 
 type Game = {
     mode: PlayMode,
-    inMatch: boolean
-    turn: Player
+    inMatch: boolean,
+    players: Player[],
+    turn: 0 | 1
 };
 
 const TicTacToe: Game = {
     mode: 'CPU',
     inMatch: false,
-    turn: PlayerOne
+    players: [PlayerOne, PlayerTwo],
+    turn: 0
 };
 
 const tileIsMarked = (tile: Tile): boolean => tile instanceof HTMLParagraphElement;
 
+const switchTurn = (): void => {
+    TicTacToe.turn = TicTacToe.turn === 0 ? 1 : 0;
+}
+
 const handleTileSelect = (e: MouseEvent): undefined | void => {
     if (tileIsMarked(e.target as Tile)) return;
-    if (TicTacToe.mode === 'CPU') {
-        console.log("CPU turn");
-    } else {
-        console.log("Player 2 Turn");
-    }
+    
+    const tile = e.target as HTMLDivElement;
+    console.log(tile.id);
+    const player = TicTacToe.players[TicTacToe.turn];
+
+    player.markTile(tile);
+
+    switchTurn();
+
+    // check for win
 }
 
 radioButtons.forEach((radio: HTMLInputElement) => {

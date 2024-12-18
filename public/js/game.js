@@ -3,21 +3,30 @@ const PlayerOne = new Player('x');
 const PlayerTwo = new Player('o');
 const radioButtons = document.querySelectorAll('input[name="playOption"]');
 const tiles = document.querySelectorAll('.tile');
+const winningNums = [
+    [1, 2, 3], [4, 5, 6], [7, 8, 9],
+    [1, 5, 9], [1, 4, 7], [2, 5, 8],
+    [3, 6, 9]
+];
 const TicTacToe = {
     mode: 'CPU',
     inMatch: false,
-    turn: PlayerOne
+    players: [PlayerOne, PlayerTwo],
+    turn: 0
 };
 const tileIsMarked = (tile) => tile instanceof HTMLParagraphElement;
+const switchTurn = () => {
+    TicTacToe.turn = TicTacToe.turn === 0 ? 1 : 0;
+};
 const handleTileSelect = (e) => {
     if (tileIsMarked(e.target))
         return;
-    if (TicTacToe.mode === 'CPU') {
-        console.log("CPU turn");
-    }
-    else {
-        console.log("Player 2 Turn");
-    }
+    const tile = e.target;
+    console.log(tile.id);
+    const player = TicTacToe.players[TicTacToe.turn];
+    player.markTile(tile);
+    switchTurn();
+    // check for win
 };
 radioButtons.forEach((radio) => {
     radio.addEventListener('change', () => {

@@ -5,5 +5,8 @@ export default class Player {
     }
     markTile(tile) {
         this.markedTiles.push(tile);
+        tile.firstElementChild.innerText = this.marker;
+    }
+    sortMarkedTiles() {
     }
 }
