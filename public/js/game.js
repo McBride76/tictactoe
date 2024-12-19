@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import Player from "./Player.js";
-const PlayerOne = new Player('ned2.png');
-const PlayerTwo = new Player('ponky.png');
+const PlayerOne = new Player('Ned', 'ned2.png');
+const PlayerTwo = new Player('Ponky', 'ponky.png');
 const radioButtons = document.querySelectorAll('input[name="playOption"]');
 const tiles = document.querySelectorAll('.tile');
 const playBtnModal = document.getElementById('playBtnModal');
@@ -31,20 +31,20 @@ const highlightWinningTiles = (tileNums) => {
     tileNums.forEach((id) => {
         tiles[id - 1].removeEventListener('mouseenter', toggleTileBgColor);
         tiles[id - 1].removeEventListener('mouseleave', toggleTileBgColor);
-        tiles[id - 1].style.backgroundColor = 'blue';
+        setTileBgColor(tiles[id - 1], 'rgb(0, 13, 255)');
     });
 };
-// const showPlayerImg = () => {
-//     playerImgModal.style.display = 'flex';
-//     playerImg.style.display = 'block';
-//     //ponky.style.width = '400px';
-//     ponky.classList.add('animate');
-// }
-// const hidePlayerImg = () => {
-//     ponkyModal.style.display = 'none';
-//     ponky.style.display = 'none';
-//     ponky.style.width = '100px'
-// }
+const showPlayerImg = (player) => {
+    showElement(playerImgModal, 'flex');
+    showElement(playerImg, 'block');
+    playerImg.src = player.getMarker;
+    playerImg.classList.add('animate');
+};
+const hidePlayerImg = () => {
+    hideElements([playerImgModal, playerImg]);
+    playerImg.src = "";
+    playerImg.classList.remove('animate');
+};
 const playerWinCombo = (player) => {
     const playerTiles = player.getMarkedTiles;
     let winCombo = [];
@@ -87,7 +87,7 @@ const handleWin = (player, winningTiles) => {
     highlightWinningTiles(winningTiles);
     // playBtnModal.classList.remove('display-none');
     // playBtn.addEventListener('click', startGame);
-    //showPonky();
+    showPlayerImg(player);
 };
 const handleTileSelect = (e) => {
     if (tileIsMarked(e.target))
