@@ -6,14 +6,6 @@
 
 .display-none { display: none; }
 
-.o {
-    color: orangered;
-}
-
-.x {
-    color: blue;
-}
-
 body {
     width: 100vw;
     height: 100vh;
@@ -71,16 +63,13 @@ input[type="radio"]:checked + label {
 }
 
 .tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #ffffff;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     position: relative;
     cursor: pointer;
-}
-
-.shape {
-    line-height: 100px;
-    text-align: center;
-    font-size: 4rem;
 }
 
 .play-btn-container {
@@ -106,7 +95,7 @@ input[type="radio"]:checked + label {
 
 #playBtn:hover { background-color: rgb(35, 65, 255); }
 
-.ponky-div {
+.img-div {
     position: absolute;
     z-index: 101;
     width: 100vw;
@@ -116,17 +105,21 @@ input[type="radio"]:checked + label {
     align-items: center;
 }
 
+.marker {
+    width: 90px;
+}
+
 .animate {
-    animation-name: spinPonky;
+    animation-name: spinPlayerImg;
     animation-duration: 1s;
     animation-fill-mode: forwards;
 }
 
-#ponky {
+#playerImg {
     width: 100px;
 }
 
-@keyframes spinPonky {
+@keyframes spinPlayerImg {
     100% {
         transform: rotate(720deg) scale(5);
     }

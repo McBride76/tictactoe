@@ -1,4 +1,4 @@
-type Marker = 'x' | 'o';
+type Marker = 'ned.png' | 'ned2.png' | 'ponky.png';
 
 export default class Player {
     constructor (
@@ -8,7 +8,10 @@ export default class Player {
 
     public markTile (tile: HTMLDivElement): void {
         this.markedTiles.push(tile);
-        (tile.firstElementChild as HTMLParagraphElement).innerText = this.marker;
+        const img = document.createElement('img');
+        img.src = 'images/' + this.marker;
+        img.classList.add('marker');
+        tile.appendChild(img);
         this.markedTiles = this.markedTiles.sort((a, b) => Number(a.id) - Number(b.id));
     }
 

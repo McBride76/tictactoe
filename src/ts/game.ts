@@ -1,7 +1,7 @@
 import Player from "./Player.js";
 
-const PlayerOne = new Player('x');
-const PlayerTwo = new Player('o');
+const PlayerOne = new Player('ned2.png');
+const PlayerTwo = new Player('ponky.png');
 
 const radioButtons: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="playOption"]')!;
 const tiles: NodeListOf<HTMLDivElement> = document.querySelectorAll('.tile')!;
@@ -9,8 +9,8 @@ const tiles: NodeListOf<HTMLDivElement> = document.querySelectorAll('.tile')!;
 const playBtnModal: HTMLElement = document.getElementById('playBtnModal')!;
 const playBtn: HTMLElement = document.getElementById('playBtn')!;
 
-const ponkyModal: HTMLElement = document.getElementById('ponkyDiv')!;
-const ponky: HTMLElement = document.getElementById('ponky')!;
+const playerImgModal: HTMLElement = document.getElementById('imgDiv')!;
+const playerImg: HTMLElement = document.getElementById('playerImg')!;
 
 const winningNums = [
     [1, 2, 3], [4, 5, 6], [7, 8, 9],
@@ -20,7 +20,9 @@ const winningNums = [
 
 type PlayMode = 'CPU' | 'PVP';
 
-type Tile = HTMLParagraphElement | HTMLDivElement;
+type Tile = HTMLDivElement;
+
+type DisplayType = 'block' | 'flex';
 
 type Game = {
     mode: PlayMode,
@@ -37,7 +39,6 @@ const TicTacToe: Game = {
 };
 
 const highlightWinningTiles = (tileNums: number[]) => {
-    console.log(tileNums);
     tileNums.forEach((id: number) => {
         tiles[id - 1].removeEventListener('mouseenter', toggleTileBgColor);
         tiles[id - 1].removeEventListener('mouseleave', toggleTileBgColor);
@@ -45,18 +46,18 @@ const highlightWinningTiles = (tileNums: number[]) => {
     });
 }
 
-const showPonky = () => {
-    ponkyModal.style.display = 'flex';
-    ponky.style.display = 'block';
-    //ponky.style.width = '400px';
-    ponky.classList.add('animate');
-}
+// const showPlayerImg = () => {
+//     playerImgModal.style.display = 'flex';
+//     playerImg.style.display = 'block';
+//     //ponky.style.width = '400px';
+//     ponky.classList.add('animate');
+// }
 
-const hidePonky = () => {
-    ponkyModal.style.display = 'none';
-    ponky.style.display = 'none';
-    ponky.style.width = '100px'
-}
+// const hidePlayerImg = () => {
+//     ponkyModal.style.display = 'none';
+//     ponky.style.display = 'none';
+//     ponky.style.width = '100px'
+// }
 
 const playerWinCombo = (player: Player): number[] => {
     const playerTiles = player.getMarkedTiles;
@@ -73,9 +74,9 @@ const playerWinCombo = (player: Player): number[] => {
 }
 
 const startGame = () => {
-    playBtnModal.classList.add('display-none');
+    hideElements([playBtnModal, playerImgModal]);
 
-    hidePonky();
+    //hidePonky();
 
     tiles.forEach((tile: HTMLDivElement) => {
         tile.style.backgroundColor = 'rgb(255, 255, 255)';
@@ -93,7 +94,13 @@ const stall = async (ms: number): Promise<void> => {
     return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
-const tileIsMarked = (tile: Tile): boolean => tile.firstElementChild?.innerHTML !== "";
+const hideElements = ([...elements]: HTMLElement[]) => {
+    elements.forEach((element: HTMLElement) => element.style.display = 'none');
+}
+
+const showElement = (element: HTMLElement, displayType: DisplayType) => element.style.display = displayType;
+
+const tileIsMarked = (tile: Tile): boolean => tile.hasChildNodes();
 
 const switchTurn = (): void => {
     TicTacToe.turn = TicTacToe.turn === 0 ? 1 : 0;
@@ -107,7 +114,7 @@ const handleWin = (player: Player, winningTiles: number[]) => {
     highlightWinningTiles(winningTiles);
     // playBtnModal.classList.remove('display-none');
     // playBtn.addEventListener('click', startGame);
-    showPonky();
+    //showPonky();
 }
 
 const handleTileSelect = (e: MouseEvent): undefined | void => {

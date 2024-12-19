@@ -8,14 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import Player from "./Player.js";
-const PlayerOne = new Player('x');
-const PlayerTwo = new Player('o');
+const PlayerOne = new Player('ned2.png');
+const PlayerTwo = new Player('ponky.png');
 const radioButtons = document.querySelectorAll('input[name="playOption"]');
 const tiles = document.querySelectorAll('.tile');
 const playBtnModal = document.getElementById('playBtnModal');
 const playBtn = document.getElementById('playBtn');
-const ponkyModal = document.getElementById('ponkyDiv');
-const ponky = document.getElementById('ponky');
+const playerImgModal = document.getElementById('imgDiv');
+const playerImg = document.getElementById('playerImg');
 const winningNums = [
     [1, 2, 3], [4, 5, 6], [7, 8, 9],
     [1, 5, 9], [1, 4, 7], [2, 5, 8],
@@ -28,24 +28,23 @@ const TicTacToe = {
     turn: 0
 };
 const highlightWinningTiles = (tileNums) => {
-    console.log(tileNums);
     tileNums.forEach((id) => {
         tiles[id - 1].removeEventListener('mouseenter', toggleTileBgColor);
         tiles[id - 1].removeEventListener('mouseleave', toggleTileBgColor);
         tiles[id - 1].style.backgroundColor = 'blue';
     });
 };
-const showPonky = () => {
-    ponkyModal.style.display = 'flex';
-    ponky.style.display = 'block';
-    //ponky.style.width = '400px';
-    ponky.classList.add('animate');
-};
-const hidePonky = () => {
-    ponkyModal.style.display = 'none';
-    ponky.style.display = 'none';
-    ponky.style.width = '100px';
-};
+// const showPlayerImg = () => {
+//     playerImgModal.style.display = 'flex';
+//     playerImg.style.display = 'block';
+//     //ponky.style.width = '400px';
+//     ponky.classList.add('animate');
+// }
+// const hidePlayerImg = () => {
+//     ponkyModal.style.display = 'none';
+//     ponky.style.display = 'none';
+//     ponky.style.width = '100px'
+// }
 const playerWinCombo = (player) => {
     const playerTiles = player.getMarkedTiles;
     let winCombo = [];
@@ -59,8 +58,8 @@ const playerWinCombo = (player) => {
     return winCombo;
 };
 const startGame = () => {
-    playBtnModal.classList.add('display-none');
-    hidePonky();
+    hideElements([playBtnModal, playerImgModal]);
+    //hidePonky();
     tiles.forEach((tile) => {
         tile.style.backgroundColor = 'rgb(255, 255, 255)';
         tile.removeEventListener('mouseenter', toggleTileBgColor);
@@ -74,7 +73,11 @@ const startGame = () => {
 const stall = (ms) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve) => setTimeout(resolve, ms));
 });
-const tileIsMarked = (tile) => { var _a; return ((_a = tile.firstElementChild) === null || _a === void 0 ? void 0 : _a.innerHTML) !== ""; };
+const hideElements = ([...elements]) => {
+    elements.forEach((element) => element.style.display = 'none');
+};
+const showElement = (element, displayType) => element.style.display = displayType;
+const tileIsMarked = (tile) => tile.hasChildNodes();
 const switchTurn = () => {
     TicTacToe.turn = TicTacToe.turn === 0 ? 1 : 0;
 };
@@ -84,7 +87,7 @@ const handleWin = (player, winningTiles) => {
     highlightWinningTiles(winningTiles);
     // playBtnModal.classList.remove('display-none');
     // playBtn.addEventListener('click', startGame);
-    showPonky();
+    //showPonky();
 };
 const handleTileSelect = (e) => {
     if (tileIsMarked(e.target))

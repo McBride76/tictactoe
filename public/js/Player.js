@@ -5,7 +5,10 @@ export default class Player {
     }
     markTile(tile) {
         this.markedTiles.push(tile);
-        tile.firstElementChild.innerText = this.marker;
+        const img = document.createElement('img');
+        img.src = 'images/' + this.marker;
+        img.classList.add('marker');
+        tile.appendChild(img);
         this.markedTiles = this.markedTiles.sort((a, b) => Number(a.id) - Number(b.id));
     }
     get getMarkedTiles() {
