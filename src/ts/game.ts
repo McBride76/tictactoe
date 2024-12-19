@@ -6,10 +6,16 @@ const PlayerTwo = new Player('o');
 const radioButtons: NodeListOf<HTMLInputElement> = document.querySelectorAll('input[name="playOption"]')!;
 const tiles: NodeListOf<HTMLDivElement> = document.querySelectorAll('.tile')!;
 
+const playBtnModal: HTMLElement = document.getElementById('playBtnModal')!;
+const playBtn: HTMLElement = document.getElementById('playBtn')!;
+
+const ponkyModal: HTMLElement = document.getElementById('ponkyDiv')!;
+const ponky: HTMLElement = document.getElementById('ponky')!;
+
 const winningNums = [
     [1, 2, 3], [4, 5, 6], [7, 8, 9],
     [1, 5, 9], [1, 4, 7], [2, 5, 8],
-    [3, 6, 9]
+    [3, 6, 9], [3, 5, 7]
 ];
 
 type PlayMode = 'CPU' | 'PVP';
@@ -39,6 +45,19 @@ const highlightWinningTiles = (tileNums: number[]) => {
     });
 }
 
+const showPonky = () => {
+    ponkyModal.style.display = 'flex';
+    ponky.style.display = 'block';
+    //ponky.style.width = '400px';
+    ponky.classList.add('animate');
+}
+
+const hidePonky = () => {
+    ponkyModal.style.display = 'none';
+    ponky.style.display = 'none';
+    ponky.style.width = '100px'
+}
+
 const playerWinCombo = (player: Player): number[] => {
     const playerTiles = player.getMarkedTiles;
     let winCombo: number[] = [];
@@ -47,14 +66,17 @@ const playerWinCombo = (player: Player): number[] => {
             winCombo = combo;
             return true;
         }
-
         return false;
     });
 
     return winCombo;
 }
 
-const reset = () => {
+const startGame = () => {
+    playBtnModal.classList.add('display-none');
+
+    hidePonky();
+
     tiles.forEach((tile: HTMLDivElement) => {
         tile.style.backgroundColor = 'rgb(255, 255, 255)';
         tile.removeEventListener('mouseenter', toggleTileBgColor);
@@ -77,6 +99,17 @@ const switchTurn = (): void => {
     TicTacToe.turn = TicTacToe.turn === 0 ? 1 : 0;
 }
 
+const resetTile = (tile: HTMLDivElement) => {
+
+}
+
+const handleWin = (player: Player, winningTiles: number[]) => {
+    highlightWinningTiles(winningTiles);
+    // playBtnModal.classList.remove('display-none');
+    // playBtn.addEventListener('click', startGame);
+    showPonky();
+}
+
 const handleTileSelect = (e: MouseEvent): undefined | void => {
     if (tileIsMarked(e.target as Tile)) return;
     
@@ -86,18 +119,13 @@ const handleTileSelect = (e: MouseEvent): undefined | void => {
     player.markTile(tile);
 
     let winCombo = playerWinCombo(player); 
-    if (winCombo.length > 0) {
-        highlightWinningTiles(winCombo);
-    }
-
-    switchTurn();
+    winCombo.length > 0 ? handleWin(player, winCombo) : switchTurn();
 }
 
 const setTileBgColor = (tile: HTMLDivElement, rgb: string) => tile.style.backgroundColor = rgb;
 
 const toggleTileBgColor = (e: MouseEvent) => {
     const tile = e.target as Tile;
-    console.log(tileIsMarked(tile));
     if (tileIsMarked(tile)) {
         setTileBgColor(tile, 'rgb(255, 255, 255)');
     } else {
@@ -113,5 +141,5 @@ radioButtons.forEach((radio: HTMLInputElement) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    reset();
+    startGame();
 })

@@ -12,10 +12,14 @@ const PlayerOne = new Player('x');
 const PlayerTwo = new Player('o');
 const radioButtons = document.querySelectorAll('input[name="playOption"]');
 const tiles = document.querySelectorAll('.tile');
+const playBtnModal = document.getElementById('playBtnModal');
+const playBtn = document.getElementById('playBtn');
+const ponkyModal = document.getElementById('ponkyDiv');
+const ponky = document.getElementById('ponky');
 const winningNums = [
     [1, 2, 3], [4, 5, 6], [7, 8, 9],
     [1, 5, 9], [1, 4, 7], [2, 5, 8],
-    [3, 6, 9]
+    [3, 6, 9], [3, 5, 7]
 ];
 const TicTacToe = {
     mode: 'CPU',
@@ -31,6 +35,17 @@ const highlightWinningTiles = (tileNums) => {
         tiles[id - 1].style.backgroundColor = 'blue';
     });
 };
+const showPonky = () => {
+    ponkyModal.style.display = 'flex';
+    ponky.style.display = 'block';
+    //ponky.style.width = '400px';
+    ponky.classList.add('animate');
+};
+const hidePonky = () => {
+    ponkyModal.style.display = 'none';
+    ponky.style.display = 'none';
+    ponky.style.width = '100px';
+};
 const playerWinCombo = (player) => {
     const playerTiles = player.getMarkedTiles;
     let winCombo = [];
@@ -43,7 +58,9 @@ const playerWinCombo = (player) => {
     });
     return winCombo;
 };
-const reset = () => {
+const startGame = () => {
+    playBtnModal.classList.add('display-none');
+    hidePonky();
     tiles.forEach((tile) => {
         tile.style.backgroundColor = 'rgb(255, 255, 255)';
         tile.removeEventListener('mouseenter', toggleTileBgColor);
@@ -61,6 +78,14 @@ const tileIsMarked = (tile) => { var _a; return ((_a = tile.firstElementChild) =
 const switchTurn = () => {
     TicTacToe.turn = TicTacToe.turn === 0 ? 1 : 0;
 };
+const resetTile = (tile) => {
+};
+const handleWin = (player, winningTiles) => {
+    highlightWinningTiles(winningTiles);
+    // playBtnModal.classList.remove('display-none');
+    // playBtn.addEventListener('click', startGame);
+    showPonky();
+};
 const handleTileSelect = (e) => {
     if (tileIsMarked(e.target))
         return;
@@ -68,15 +93,11 @@ const handleTileSelect = (e) => {
     const player = TicTacToe.players[TicTacToe.turn];
     player.markTile(tile);
     let winCombo = playerWinCombo(player);
-    if (winCombo.length > 0) {
-        highlightWinningTiles(winCombo);
-    }
-    switchTurn();
+    winCombo.length > 0 ? handleWin(player, winCombo) : switchTurn();
 };
 const setTileBgColor = (tile, rgb) => tile.style.backgroundColor = rgb;
 const toggleTileBgColor = (e) => {
     const tile = e.target;
-    console.log(tileIsMarked(tile));
     if (tileIsMarked(tile)) {
         setTileBgColor(tile, 'rgb(255, 255, 255)');
     }
@@ -92,5 +113,5 @@ radioButtons.forEach((radio) => {
     });
 });
 document.addEventListener('DOMContentLoaded', () => {
-    reset();
+    startGame();
 });
