@@ -58,16 +58,9 @@ const playerWinCombo = (player) => {
     return winCombo;
 };
 const startGame = () => {
-    hideElements([playBtnModal, playerImgModal]);
-    //hidePonky();
-    tiles.forEach((tile) => {
-        tile.style.backgroundColor = 'rgb(255, 255, 255)';
-        tile.removeEventListener('mouseenter', toggleTileBgColor);
-        tile.removeEventListener('mouseleave', toggleTileBgColor);
-        tile.addEventListener('mouseenter', toggleTileBgColor);
-        tile.addEventListener('mouseleave', toggleTileBgColor);
-        tile.addEventListener('click', handleTileSelect);
-    });
+    hidePlayerImg();
+    hideElements([playBtnModal]);
+    tiles.forEach((tile) => resetTile(tile));
     TicTacToe.players.forEach((player) => player.reset());
 };
 const stall = (ms) => __awaiter(void 0, void 0, void 0, function* () {
@@ -82,11 +75,18 @@ const switchTurn = () => {
     TicTacToe.turn = TicTacToe.turn === 0 ? 1 : 0;
 };
 const resetTile = (tile) => {
+    var _a;
+    (_a = tile.firstElementChild) === null || _a === void 0 ? void 0 : _a.remove();
+    tile.style.backgroundColor = 'rgb(255, 255, 255)';
+    tile.removeEventListener('mouseenter', toggleTileBgColor);
+    tile.removeEventListener('mouseleave', toggleTileBgColor);
+    tile.addEventListener('mouseenter', toggleTileBgColor);
+    tile.addEventListener('mouseleave', toggleTileBgColor);
+    tile.addEventListener('click', handleTileSelect);
 };
 const handleWin = (player, winningTiles) => {
     highlightWinningTiles(winningTiles);
-    // playBtnModal.classList.remove('display-none');
-    // playBtn.addEventListener('click', startGame);
+    showElement(playBtnModal, 'block');
     showPlayerImg(player);
 };
 const handleTileSelect = (e) => {
@@ -116,5 +116,5 @@ radioButtons.forEach((radio) => {
     });
 });
 document.addEventListener('DOMContentLoaded', () => {
-    startGame();
+    playBtn.addEventListener('click', startGame);
 });
