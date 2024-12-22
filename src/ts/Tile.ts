@@ -10,9 +10,11 @@ export default class Tile {
         return Number(this.element.id)
     }
 
-    public mark (player: Player) {
-        player.markTile(this.id);
-        this.element.appendChild(player.getMarker);
+    public mark (player: Player): void {
+        if (! this.isMarked()) {
+            player.markTile(this.id);
+            this.element.appendChild(player.getMarker);
+        }
     }
 
     public reset () {

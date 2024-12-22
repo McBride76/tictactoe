@@ -6,8 +6,10 @@ export default class Tile {
         return Number(this.element.id);
     }
     mark(player) {
-        player.markTile(this.id);
-        this.element.appendChild(player.getMarker);
+        if (!this.isMarked()) {
+            player.markTile(this.id);
+            this.element.appendChild(player.getMarker);
+        }
     }
     reset() {
         var _a;
