@@ -49,10 +49,6 @@ const tileClick = (e: MouseEvent) => {
     const tileID = Number((e.target as HTMLDivElement).id);
     const tile = Tiles[tileID - 1];
     handleTileSelect(tile);
-
-    // const tile = e.target as Tile;
-    // if (tileIsMarked(tile) || (TicTacToe.turn === 1 && TicTacToe.mode === 'CPU')) return;
-    // handleTileSelect(tile);
 }
 
 Tiles.forEach(tile => tile.element.addEventListener('click', tileClick));
@@ -78,20 +74,6 @@ const hidePlayerImg = () => {
     playerImg.classList.remove('animate');
 }
 
-const playerWinCombo = (player: Player): number[] => {
-    const playerTiles = player.getMarkedTiles;
-    let winCombo: number[] = [];
-    winningNums.some((combo: number[]) => {
-        if (combo.every((num: number) => playerTiles.includes(num))) {
-            winCombo = combo;
-            return true;
-        }
-        return false;
-    });
-
-    return winCombo;
-}
-
 const startGame = () => {
     hidePlayerImg();
     hideElements([playBtnModal]);
@@ -115,37 +97,34 @@ const switchTurn = (): void => {
     TicTacToe.turn = TicTacToe.turn === 0 ? 1 : 0;
 }
 
-// const resetTile = (tile: HTMLDivElement) => {
-//     tile.firstElementChild?.remove();
-//     tile.style.backgroundColor = 'rgb(255, 255, 255)';
-//     tile.removeEventListener('mouseenter', toggleTileBgColor);
-//     tile.removeEventListener('mouseleave', toggleTileBgColor);
-//     tile.addEventListener('mouseenter', toggleTileBgColor);
-//     tile.addEventListener('mouseleave', toggleTileBgColor);
-//     tile.addEventListener('click', tileClick);
-// }
-
-// const handleWin = async (player: Player, winningTiles: number[]) => {
-//     highlightWinningTiles(winningTiles);
-//     showPlayerImg(player);
-//     await stall(1000);
-//     showElement(playBtnModal, 'block');
-// }
-
 const cpuTurn = () => {
     let index = Math.floor(Math.random() * unmarkedTiles.length);
-    console.log(index, unmarkedTiles.length);
     TicTacToe.turn = 1;
-    console.log(index - 1);
-    //TicTacToe.players[TicTacToe.turn].markTile(tiles[index - 1]);
-    //unmarkedTiles.splice(unmarkedTiles.indexOf(Number(tiles[index - 1].id)), 1);
 }
 
+// Returns winning number combo or empty array
+const playerHasWon = (player: Player): number[] => {
+    let combo: number[] = [];
+    winningNums.some((nums: number[]) => {
+        if (nums.every((num: number) => player.getMarkedTiles.includes(num))) {
+            combo = nums;
+            return true;
+        }
+
+        return false;
+    })
+
+    return combo;
+};
 
 
 const handleTileSelect = (tile: Tile): undefined | void => {
     const player = TicTacToe.players[TicTacToe.turn];
     board.markTile(player, tile);
+
+    if (playerHasWon(player)) {
+        
+    }
 
     //unmarkedTiles.splice(unmarkedTiles.indexOf(Number(tile.id)), 1);
 
