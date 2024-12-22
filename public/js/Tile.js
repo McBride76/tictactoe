@@ -19,4 +19,7 @@ export default class Tile {
     isMarked() {
         return this.element.hasChildNodes();
     }
+    highlight() {
+        this.element.style.backgroundColor = 'blue';
+    }
 }

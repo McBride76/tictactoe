@@ -68,7 +68,6 @@ const hideElements = ([...elements]) => {
     elements.forEach((element) => element.style.display = 'none');
 };
 const showElement = (element, displayType) => element.style.display = displayType;
-// const tileIsMarked = (tile: Tile): boolean => tile.hasChildNodes();
 const switchTurn = () => {
     TicTacToe.turn = TicTacToe.turn === 0 ? 1 : 0;
 };
@@ -77,7 +76,7 @@ const cpuTurn = () => {
     TicTacToe.turn = 1;
 };
 // Returns winning number combo or empty array
-const playerHasWon = (player) => {
+const getWinningCombo = (player) => {
     let combo = [];
     winningNums.some((nums) => {
         if (nums.every((num) => player.getMarkedTiles.includes(num))) {
@@ -88,11 +87,18 @@ const playerHasWon = (player) => {
     });
     return combo;
 };
+const handleWin = (tileNums) => {
+    tileNums.forEach((num) => Tiles[num - 1].highlight());
+};
 const handleTileSelect = (tile) => {
     const player = TicTacToe.players[TicTacToe.turn];
     board.markTile(player, tile);
-    if (playerHasWon(player)) {
+    const winCombo = getWinningCombo(player);
+    if (winCombo.length > 0) {
+        handleWin(winCombo);
+        return;
     }
+    TicTacToe.mode === 'CPU' ? cpuTurn() : switchTurn();
     //unmarkedTiles.splice(unmarkedTiles.indexOf(Number(tile.id)), 1);
     //console.log('Line 134: unmarkedTiles = ' + unmarkedTiles);
     //player.markTile(tile);
@@ -104,7 +110,6 @@ const handleTileSelect = (tile) => {
     // if (TicTacToe.mode === 'CPU') {
     //     cpuTurn();
     // }
-    switchTurn();
 };
 //const setTileBgColor = (tile: HTMLDivElement, rgb: string) => tile.style.backgroundColor = rgb;
 // const toggleTileBgColor = (e: MouseEvent) => {

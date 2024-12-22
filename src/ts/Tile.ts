@@ -22,8 +22,11 @@ export default class Tile {
         this.element.style.backgroundColor = 'rgb(255, 255, 255)';
     }
 
-    private isMarked (): boolean {
+    public isMarked (): boolean {
         return this.element.hasChildNodes();
     }
 
+    public highlight () {
+        this.element.style.backgroundColor = 'blue';
+    }
 }
