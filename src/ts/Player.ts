@@ -10,7 +10,7 @@ export default class Player {
     public markTile (tileID: number): void {
         this.markedTiles.push(tileID);
         this.markedTiles = this.markedTiles.sort((a, b) => a - b);
-    }
+    } 
 
     public get getMarker (): HTMLImageElement {
         const img = document.createElement('img');

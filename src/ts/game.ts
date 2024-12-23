@@ -4,8 +4,6 @@ import Tile from "./Tile.js";
 
 type PlayMode = 'CPU' | 'PVP';
 
-//type Tile = HTMLDivElement;
-
 type DisplayType = 'block' | 'flex';
 
 const PlayerOne = new Player('Ned', 'ned2.png');
@@ -77,7 +75,7 @@ const hidePlayerImg = () => {
 const startGame = () => {
     hidePlayerImg();
     hideElements([playBtnModal]);
-    //tiles.forEach((tile: HTMLDivElement) => resetTile(tile));
+    Tiles.forEach((tile: Tile) => tile.reset());
     TicTacToe.players.forEach((player: Player) => player.reset());
 }
 
@@ -96,8 +94,9 @@ const switchTurn = (): void => {
 }
 
 const cpuTurn = () => {
-    let index = Math.floor(Math.random() * unmarkedTiles.length);
-    TicTacToe.turn = 1;
+    const tile = board.unmarkedTiles[Math.floor(Math.random() * board.unmarkedTiles.length)];
+    const CPU = TicTacToe.players[TicTacToe.turn];
+    switchTurn();
 }
 
 // Returns winning number combo or empty array
@@ -125,6 +124,8 @@ const handleTileSelect = (tile: Tile): undefined | void => {
     board.markTile(player, tile);
 
     const winCombo = getWinningCombo(player);
+
+    console.log(winCombo);
 
     if (winCombo.length > 0) {
         handleWin(winCombo);

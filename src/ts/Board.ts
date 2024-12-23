@@ -3,9 +3,7 @@ import Tile from "./Tile";
 
 export default class Board {
 
-    constructor (
-        private tiles: Array<Tile>,
-    ) {}
+    constructor ( private tiles: Array<Tile> ) {}
 
     public markTile (player: Player, tile: Tile) {
         tile.mark(player);
@@ -17,27 +15,7 @@ export default class Board {
         this.tiles.forEach((tile: Tile) => tile.reset());
     }
 
-    // public toggleTileBgColor = (e: MouseEvent) => {
-    //     const tile = e.target as Tile;
-    //     if (tileIsMarked(tile)) {
-    //         setTileBgColor(tile, 'rgb(255, 255, 255)');
-    //     } else {
-    //         let color = tile.style.backgroundColor === 'rgb(255, 255, 255)' ? 'rgb(248, 251, 255)' : 'rgb(255, 255, 255)';
-    //         setTileBgColor(tile, color);
-    //     }
-    // }
-
-    // private addHoverEventListener (tile: HTMLDivElement) {
-    //     tile.removeEventListener('mouseenter', this.toggleTileBgColor);
-    //     tile.removeEventListener('mouseleave', this.toggleTileBgColor);
-    //     tile.addEventListener('mouseenter', this.toggleTileBgColor);
-    //     tile.addEventListener('mouseleave', this.toggleTileBgColor);
-    // }
-
-    // private resetTile(tile: Tile) {
-    //     tile.firstElementChild?.remove();
-    //     tile.style.backgroundColor = 'rgb(255, 255, 255)';
-    //     this.addHoverEventListener(tile);
-    //     tile.addEventListener('click', tileClick);
-    // }
+    public get unmarkedTiles (): number[] {
+        return this.tiles.filter((tile: Tile) => (! tile.isMarked())).map(tile => tile.id);
+    }
 }
